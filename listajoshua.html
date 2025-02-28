@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Asistencia</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        input {
+            background-color: #333;
+            color: white;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Confirmar Asistencia</h2>
+        <p>Por favor, ingresa tu nombre para confirmar tu asistencia.</p>
+        <input type="text" id="nombre" placeholder="Tu nombre" required>
+        <button onclick="confirmarAsistencia()">Confirmar</button>
+        <p id="mensaje"></p>
+    </div>
+
+    <script>
+        function confirmarAsistencia() {
+            var nombre = document.getElementById("nombre").value;
+            if (nombre.trim() === "") {
+                alert("Por favor, ingresa tu nombre.");
+                return;
+            }
+            document.getElementById("mensaje").innerText = "Gracias, " + nombre + "! Tu asistencia ha sido confirmada.";
+            descargarExcel(nombre);
+        }
+
+       function enviarAsistencia(nombre) {
+    var url = "https://docs.google.com/spreadsheets/d/1qWC-Mnb5crw2VqYbdZe5xjCx_3gIeLvUByEpuU2LXqM/edit?usp=sharing"; // Reemplaza con la URL del script de Google Apps Script
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nombre: nombre }),
+    })
+    .then(response => response.text())
+    .then(data => console.log("Respuesta del servidor:", data))
+    .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
